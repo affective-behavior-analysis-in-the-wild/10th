@@ -1063,42 +1063,56 @@ The performance measure is the average Pearson's correlation (&rho;) across the 
 
 <h3>Database</h3> 
  
-For this Challenge, the BAH (Behavioural Ambivalence/Hesitancy) dataset will be used for the recognition of ambivalence and hesitancy from Q&A videos captured for behaviour analysis. 
-This dataset is designed to detect conflicting affect and intentions around behavioural change intervention. 
-It has been collected by asking subjects across Canada a series of 7 questions that were designed to incite neutral, positive, negative, ambivalent, willing, resistant, or hesitant emotions about their behaviours. 
-Subjects recorded themselves answering each question. 
-        
-In this challenge, experts in behavioural science collected up to 7 videos from 124 subjects. 
-The test set consists of videos from 40 randomly selected subjects. 
-The training and validation sets include the remaining 84 subjects, encompassing 431 videos with a total duration of 3.4 hours and approximately 295,500 frames. 
-The videos were labeled at frame level to indicate the presence (1) or absence (0) of ambivalence/hesitancy. 
-The design of the questions and annotations are performed by a team of behavioural scientists.
+Upon registration for the AH video recognition challenge, teams will be granted access to a new, fully annotated at video- and frame-level version of the BAH dataset [1] that was collected for multimodal recognition of A/H in videos. 
+It contains 1,427 videos with a total duration of 10.60 hours, captured from 300 participants across Canada, answering a predefined set of questions to elicit A/H. 
+It is intended to mirror real-world online personalized behaviour change interventions. 
+BAH is fully annotated by experts to provide timestamps that indicate where A/H occurs, and frame- and video-level annotations with A/H cues. 
+Speech-to-text transcripts, their timestamps, cropped and aligned faces, and participants' metadata are also provided. 
+Since A and H manifest similarly in practice, we provide a binary annotation indicating the presence or absence of both A and H, without distinction.
+
+Each participant in the dataset may have up to seven videos. The dataset is divided participant-wise into training, validation, and test sets. 
+      
+For performance evaluation, participants can train their models on the BAH training set using any type of supervision, and report the performance on its public test set. A second unlabeled private test set will be released to the teams before the end of the challenge. Teams must submit by email to the AH recognition challenge organizers a file of their predictions per-video using this private test set. They are allowed to provide multiple trials (up to 5 trials) within the week of the test period. We will compute the performance and the best trial will be used to rank teams and announce the winners. Teams can submit all 5 trials at once, or one trial at a time. This last option allows us to send teams the trial performance as feedback to adjust their approach if needed for the next trial. More details of the submission format will be communicated on the date of the test release.
+
 
  <br></br>
 
  <h3>Goal of the Challenge and Rules</h3> 
 <p> 
-Participants in this Challenge will have access to the training and validation videos of the 84 subjects. 
-In terms of training annotation, we provide frame-based annotation for each video as 0 or 1 for the absence or presence of ambivalence and hesitancy. 
-Participants in this challenge are required to develop their recognition method using their learning setup choice to predict per-frame ambivalence/hesitancy in a video: supervised/self-supervised, domain adaptation, zero-/few-shot learning, etc. 
+The challenge aims at the design of innovative models to predict A/H at the video-level to indicate whether or not a video contains A/H  (1: presence of A/H, 0: absence of A/H). Teams are required to develop their methods to recognize A/H at the video-level (binary task). Given a video, can we predict whether there is or not A/H?  Different learning setups could be considered: supervised/self-supervised, domain adaptation and personalization, zero-/few-shot learning, etc. Standard multimodal models could be used, in addition to multimodal LLMs and other recent architectures. Teams are advised to develop solutions tailored for A/H recognition.
+</p
+
+<p>  
+Teams are allowed to use any publicly available or private pre-trained model and any public or private dataset (that contains any type of annotations, e.g. valence/arousal, basic or compound emotions, action units). Other datasets for ambivalence/hesitancy, if available, could be used, in addition to the BAH dataset, but they must be disclosed in the paper. 
 </p>
  
-<p>
-Teams are allowed to use any publicly available or non-available pre-trained model and any public or non-available database (that contains any type of annotations, e.g. valence/arousal, basic or compound expressions, action units).
-</p>
+
 
 
  
 <h3>Performance Assessment</h3> 
 <p>
-  The performance measure (P) is the weighted F1 score (at frame level) across both classes (presence and absence of ambivalence/hesitancy).
+The performance measure (P) is the average F1 score (Macro F1) at the video level across both classes (presence (1) and absence (0) of A/H) over the private test set, and will be used to rank teams. We will also report the average precision score (AP) of the positive class (1).
+
 </p>
 
 
 <h3>Baseline Results</h3> 
-<p> The baseline network is a multimodal model that includes visual, audio, and transcript following the feature-based approach <a href="https://github.com/sbelharbi/feature-vs-text-compound-emotion">here</a>.
-  Its performance on the default validation set is: P  = 0.70. </p>
+A performance of P = 0.2827 was obtained on the BAH public test set, using a baseline model (zero-shot setup with Multimodal-LLM (M-LLM), Video-LLaVA, with a simple prompt and vision modality only (code: https://github.com/sbelharbi/zero-shot-m-llm-bah-prediction). See more details in [1]. 
 
+Additionally, teams could build on top of standard multimodal models that leverage vision, audio, and text modality, such as the one used in [1], and adapt it from frame-level prediction to video-level prediction: https://github.com/sbelharbi/bah-dataset
+
+Teams can explore improving standard multimodal models, temporal modeling, multimodal alignment, and multimodal LLMs with specialized parameter-efficient fine-tuning (PEFT). Domain adaptation and personalization could also be considered.
+
+<p>
+[1]: González-González M, Belharbi S, Zeeshan MO, Sharafi M, Aslam MH, Pedersoli M, Koerich AL, Bacon SL, Granger E. “BAH Dataset for Ambivalence/Hesitancy Recognition in Videos for Behavioural Change”. https://arxiv.org/pdf/2505.19328, ICLR, 2026.
+</p>
+<p>        
+[2]: Sharafi M, Belharbi S, Salem HB, Etemad A, Koerich AL, Pedersoli M, Bacon S, Granger E. “Personalized Feature Translation for Expression Recognition: An Efficient Source-Free Domain Adaptation Method”. https://arxiv.org/pdf/2508.09202. ICLR, 2026.
+</p>
+<p>
+[3]: Zeeshan MO, Aslam MH, Belharbi S, Koerich AL, Pedersoli M, Bacon S, Granger E. “Subject-based domain adaptation for facial expression recognition”. https://arxiv.org/pdf/2312.05632, FG conference, 2024.
+</p>
 
 
 
@@ -1515,6 +1529,7 @@ ftiaxe faq
 </body>
 
 </html>
+
 
 
 
